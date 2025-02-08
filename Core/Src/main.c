@@ -196,6 +196,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   HAL_GPIO_WritePin(ROW_2_GPIO_Port, ROW_2_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(ROW_3_GPIO_Port, ROW_3_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(ROW_4_GPIO_Port, ROW_4_Pin, GPIO_PIN_RESET);
+  //solo revisar main
 }
 
 /* USER CODE END 0 */

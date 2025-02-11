@@ -20,7 +20,7 @@
 7990	10672	7609993848245315	CMakeFiles/Project.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c.obj	735879eb20636e6b
 52	2766	7607526315611658	CMakeFiles/4100901-Final_Project_2024_2.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c.obj	5b8a2e7bec8e7b86
 59	3255	7607526319832444	CMakeFiles/4100901-Final_Project_2024_2.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma.c.obj	cc117e9f3f4a9ed3
-2135	3036	7610018439102296	Project.elf	858f1be9e3fb630
+904	1676	7610190838000559	Project.elf	ef71f9df225e2071
 73	3462	7607526321730415	CMakeFiles/4100901-Final_Project_2024_2.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c.obj	3f5f3a5ef8bd7e58
 2721	5967	7607526348150958	CMakeFiles/4100901-Final_Project_2024_2.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_pwr_ex.c.obj	f36750febb55f2b4
 2766	5798	7607526345988829	CMakeFiles/4100901-Final_Project_2024_2.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_cortex.c.obj	6733e03f832f63b
@@ -31,7 +31,7 @@
 106	2648	7609993768351625	CMakeFiles/Project.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c.obj	297ce08bc4b4eedf
 8700	11035	7609993852551049	CMakeFiles/Project.dir/Core/Src/system_stm32l4xx.c.obj	fda6f59475c806b0
 32	2398	7609993765345685	CMakeFiles/Project.dir/Drivers/keypad/keypad.c.obj	1fb822b12367460f
-20	2132	7610018430762375	CMakeFiles/Project.dir/Core/Src/main.c.obj	ca9314ec92beb7a4
+7	902	7610190830802134	CMakeFiles/Project.dir/Core/Src/main.c.obj	ca9314ec92beb7a4
 58	2720	7609993768851785	CMakeFiles/Project.dir/Core/Src/stm32l4xx_it.c.obj	458f158744381b26
 2527	5119	7609993792264862	CMakeFiles/Project.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c.obj	cb502a527089661b
 72	2826	7609993769751984	CMakeFiles/Project.dir/Core/Src/stm32l4xx_hal_msp.c.obj	9169236cd9236436
@@ -51,6 +51,3 @@
 10389	11113	7609993853985571	CMakeFiles/Project.dir/startup_stm32l476xx.s.obj	4b6d63add04daa97
 9509	11504	7609993858020904	CMakeFiles/Project.dir/Core/Src/syscalls.c.obj	59ad4b5b185fe681
 37	1007	7610022087914582	CMakeFiles/Project.dir/Core/Src/ring_buffer.c.obj	93192ae4de2d85dd
-1010	1965	7610022096617277	Project.elf	ef71f9df225e2071
-117	2038	7610030224000218	CMakeFiles/Project.dir/Core/Src/main.c.obj	ca9314ec92beb7a4
-2044	2965	7610030232551410	Project.elf	ef71f9df225e2071

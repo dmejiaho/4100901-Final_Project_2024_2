@@ -22,6 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "keypad.h" 
+#include "ring_buffer.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,6 +71,23 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   key_pressed_tick = HAL_GetTick();
   column_pressed = GPIO_Pin;
 }
+#define RB_CAPACITY 16
+ring_buffer_t rb;
+uint8_t rb_storage[RB_CAPACITY];
+const char* get_word(uint8_t letter) {
+  switch(letter) {
+      case 'A': return "Apple ";
+      case 'B': return "Banana ";
+      case 'C': return "Cherry ";
+      case 'D': return "Date ";
+      case '1': return "One ";
+      case '2': return "Two ";
+      case '#': return "Hash ";
+      case '*': return "Star ";
+      // Add more cases for your keypad layout
+      default:  return "Unknown ";
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -85,6 +104,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -108,8 +128,22 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   keypad_init();
+  ring_buffer_init(&rb, rb_storage, RB_CAPACITY);
   HAL_UART_Transmit(&huart2, (uint8_t *)"Hello World\n", 12, 100);
   while (1) {
+    // Key detection and buffer writing
+    if (column_pressed != 0 && (key_pressed_tick + 5) < HAL_GetTick()) {
+      uint8_t key = keypad_scan(column_pressed);
+      ring_buffer_write(&rb, key);  // Store in buffer instead of immediate transmit
+      column_pressed = 0;
+  }
+
+    // Buffer reading and word processing
+    uint8_t received_char;
+    while(ring_buffer_read(&rb, &received_char)) {  // Process all queued keys
+        const char *word = get_word(received_char);
+        HAL_UART_Transmit(&huart2, (uint8_t *)word, strlen(word), 100);
+    }
     if (column_pressed != 0 && (key_pressed_tick + 5) < HAL_GetTick() ) {
       uint8_t key = keypad_scan(column_pressed);
       HAL_UART_Transmit(&huart2, &key, 1, 100);

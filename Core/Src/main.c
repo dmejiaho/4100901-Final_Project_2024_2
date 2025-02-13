@@ -121,10 +121,10 @@ int main(void)
     if (column_pressed != 0 && (key_pressed_tick + 5) < HAL_GetTick() ) {
       uint8_t key = keypad_scan(column_pressed);
       // Only process the key if it is not NUL (0)
-      if (key != 0) {
-          ring_buffer_write(&rx_buffer, key);
-          //HAL_UART_Transmit(&huart2, &key, 1, 100);
-      }
+      
+      ring_buffer_write(&rx_buffer, key);
+      HAL_UART_Transmit(&huart2, &key, 1, 100);
+
       column_pressed = 0;
     }
     process_commands(); 

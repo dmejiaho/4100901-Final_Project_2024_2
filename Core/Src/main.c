@@ -303,7 +303,7 @@ static void MX_GPIO_Init(void)
 
 // Existing EXTI callback
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  if ((HAL_GetTick() - debounce_tick) < 20) return; // 20ms debounce
+  if ((HAL_GetTick() - debounce_tick) < 150) return; // 150ms debounce
   debounce_tick = HAL_GetTick();
   column_pressed = GPIO_Pin; 
   key_pressed_tick = HAL_GetTick(); 

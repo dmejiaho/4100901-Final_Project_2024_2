@@ -123,7 +123,7 @@ int main(void)
       // Only process the key if it is not NUL (0)
       if (key != 0) {
           ring_buffer_write(&rx_buffer, key);
-          HAL_UART_Transmit(&huart2, &key, 1, 100);
+          //HAL_UART_Transmit(&huart2, &key, 1, 100);
       }
       column_pressed = 0;
     }

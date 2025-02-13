@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "keypad.h" 
 #include "ring_buffer.h"
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -113,12 +114,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   keypad_init();
   ring_buffer_init(&rx_buffer, rx_buffer_mem, sizeof(rx_buffer_mem));
+  memset(current_cmd, 0, COMMAND_LENGTH);
   HAL_UART_Receive_IT(&huart2, &rx_byte, 1); // Start UART interrupt
   while (1) {
 
     if (column_pressed != 0 && (key_pressed_tick + 5) < HAL_GetTick() ) {
       uint8_t key = keypad_scan(column_pressed);
       ring_buffer_write(&rx_buffer, key);
+      HAL_UART_Transmit(&huart2, &key, 1, 100);
       column_pressed = 0;
     }
     process_commands(); 
@@ -231,10 +234,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LD2_Pin|ROW_1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LD2_Pin|ROW_1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, ROW_2_Pin|ROW_4_Pin|ROW_3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, ROW_2_Pin|ROW_4_Pin|ROW_3_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -298,6 +301,8 @@ static void MX_GPIO_Init(void)
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   if ((HAL_GetTick() - debounce_tick) < 20) return; // 20ms debounce
   debounce_tick = HAL_GetTick();
+  column_pressed = GPIO_Pin; 
+  key_pressed_tick = HAL_GetTick(); 
 }
 // New UART callback
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
@@ -317,15 +322,15 @@ void uart_send_string(const char *str) {
 void process_commands(void) {
   uint8_t byte;
   while (ring_buffer_read(&rx_buffer, &byte)) {
-      // Shift buffer left and append new byte
+      // Slide the current command buffer to the left and append the new byte
       memmove(current_cmd, current_cmd + 1, COMMAND_LENGTH - 1);
       current_cmd[COMMAND_LENGTH - 1] = (char)byte;
 
-      // Check for full command match
+      // Check for a complete command match
       if (memcmp(current_cmd, CMD_OPEN, COMMAND_LENGTH) == 0) {
           HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
           uart_send_string("Door: OPEN\r\n");
-          memset(current_cmd, 0, COMMAND_LENGTH); // Reset buffer
+          memset(current_cmd, 0, COMMAND_LENGTH); // Reset buffer after command
       } else if (memcmp(current_cmd, CMD_CLOSE, COMMAND_LENGTH) == 0) {
           HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
           uart_send_string("Door: CLOSED\r\n");
@@ -341,7 +346,6 @@ void process_commands(void) {
       }
   }
 }
-
 /* USER CODE END 4 */
 
 /**
